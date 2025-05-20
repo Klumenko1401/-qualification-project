@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="GameStore.Controllers.AccountController">
+    <Position X="3" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAQAAAAAAAAAAIAAAABAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Controllers\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.CommentsController">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAQAAAAAABBACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\CommentsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.GamesController">
+    <Position X="4.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAABBACAAAAAAAAAAAEAAEACAAGAAAAAAAA=</HashCode>
+      <FileName>Controllers\GamesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.HomeController">
+    <Position X="13.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABQAAAAAAAAAAIAAAAQAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.OrdersController">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAQAAAABBACAAAAAAAAAAAEAAEACAAEAEAAAAAA=</HashCode>
+      <FileName>Controllers\OrdersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.RaitingsController">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAABBACAAAAAAAAAAAkAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\RaitingsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.RequirementsController">
+    <Position X="5.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBACAAAAAAAAAgAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\RequirementsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.ScreenshotsController">
+    <Position X="3.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAICAAABBACAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\ScreenshotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Controllers.UsersController">
+    <Position X="8.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAABBQCAAAAAAAAAAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\UsersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Comment">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAAAAggAAAAAEAAAgAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.ErrorViewModel">
+    <Position X="13.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Instrument">
+    <Position X="1.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAgCAAggAAAAAIABAQCAIJAABAACAAACAAAMAA=</HashCode>
+      <FileName>Models\Instrument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Genre">
+    <Position X="9.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Genre.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.LoginModel">
+    <Position X="1.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAQAAAAAAA=</HashCode>
+      <FileName>Models\LoginModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Order">
+    <Position X="3.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAABAAAAAAAAgAAAAAEAAAgAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Raiting">
+    <Position X="11.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAgAAAAAEAAAgAAAgAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\Raiting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.RegisterModel">
+    <Position X="0.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAAAAAAAAQAAAAAAAAAAAACAAAQAAAAIAg=</HashCode>
+      <FileName>Models\RegisterModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Requirement">
+    <Position X="5.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAggAAAAEAAACIAAgAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Models\Requirement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Role">
+    <Position X="11.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.Screenshot">
+    <Position X="11.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAEAAAAAAAgAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Screenshot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Models.User">
+    <Position X="10.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAEAAEIAAAAAgIAAEAQAAAAAAABAAAACAAAQAAAAIAg=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Data.DBInitializer">
+    <Position X="11.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\DBInitializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStore.Data.GameStoreContext">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAEAACAAAAAAAAAAAAIAAAAAEgJAAAAAAAAAAAAAMAA=</HashCode>
+      <FileName>Data\GameStoreContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="16.75" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

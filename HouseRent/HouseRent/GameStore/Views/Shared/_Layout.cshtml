@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HouseRent</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Підключення Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HouseRent</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                   asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
+                            </li>
+
+                            if (User.IsInRole("Адміністратор"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Posters" && ViewContext.RouteData.Values["Action"]?.ToString() == "All") ? "active" : "")"
+                                       asp-area="" asp-controller="Posters" asp-action="All">Всі оголошення</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Posters" && ViewContext.RouteData.Values["Action"]?.ToString() == "Modering") ? "active" : "")"
+                                       asp-area="" asp-controller="Posters" asp-action="Modering">Модерація</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminOrders" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                       asp-area="" asp-controller="AdminOrders" asp-action="Index">Договори</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" && ViewContext.RouteData.Values["Action"]?.ToString() == "Owners") ? " btwactive" : "")"
+                                       asp-area="" asp-controller="Users" asp-action="Owners">Продавці</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" && ViewContext.RouteData.Values["Action"]?.ToString() == "Clients") ? "active" : "")"
+                                       asp-area="" asp-controller="Users" asp-action="Clients">Покупці</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminUsers" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                       asp-area="" asp-controller="AdminUsers" asp-action="Index">Перевірка користувачів</a>
+                                </li>
+                            }
+
+                            if (User.IsInRole("Продавець"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Posters" && ViewContext.RouteData.Values["Action"]?.ToString() == "MyPosters") ? "active" : "")"
+                                       asp-area="" asp-controller="Posters" asp-action="MyPosters">Мої оголошення</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Orders" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                       asp-area="" asp-controller="Orders" asp-action="Index">Мої договори</a>
+                                </li>
+                            }
+
+                            if (User.IsInRole("Покупець"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Orders" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                       asp-area="" asp-controller="Orders" asp-action="Index">Мої договори</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" && ViewContext.RouteData.Values["Action"]?.ToString() == "Details") ? "active" : "")"
+                                   asp-area="" asp-controller="Users" asp-action="Details">Мій профіль</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Account" && ViewContext.RouteData.Values["Action"]?.ToString() == "Logout") ? "active" : "")"
+                                   asp-area="" asp-controller="Account" asp-action="Logout">Вийти</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Posters" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                   asp-area="" asp-controller="Posters" asp-action="Index">Оголошення</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Account" && ViewContext.RouteData.Values["Action"]?.ToString() == "Login") ? "active" : "")"
+                                   asp-area="" asp-controller="Account" asp-action="Login">Логін</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Account" && ViewContext.RouteData.Values["Action"]?.ToString() == "Register") ? "active" : "")"
+                                   asp-area="" asp-controller="Account" asp-action="Register">Реєстрація</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            © 2025 - HouseRent - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

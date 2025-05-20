@@ -1,0 +1,42 @@
+﻿@model GameStore.Models.Comment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<div>
+    <h4>Comment</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Опис
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Оголошення
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Poster.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            Покупець
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PublicationDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Редагувати</a>
+    
+</div>

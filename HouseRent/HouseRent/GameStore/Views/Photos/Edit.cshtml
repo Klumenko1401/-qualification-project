@@ -1,0 +1,43 @@
+﻿@model GameStore.Models.Photo
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4>Редагувати фото</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="PosterID" class="control-label">Оголошення</label>
+                <select asp-for="PosterID" class="form-control" asp-items="ViewBag.PosterID"></select>
+                <span asp-validation-for="PosterID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Фото</label>
+                <input type="file" name="file" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <img src="@Model.Image" alt="Поточне фото" style="max-width: 200px; max-height: 200px; margin-top: 10px;" />
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Повернутися до списку</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

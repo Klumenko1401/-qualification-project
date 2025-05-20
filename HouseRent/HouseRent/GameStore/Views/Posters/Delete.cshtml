@@ -1,0 +1,81 @@
+﻿@model HouseRent.Models.Poster
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Назва
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Опис
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Тип оголошення
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PosterType.ID)
+        </dd class>
+        <dt class = "col-sm-2">
+            Мінімальна кількість днів на оренду
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MinRentDays)
+        </dd>
+        <dt class = "col-sm-2">
+            Ціна
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            Кількість платежів
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaxPayTerms)
+        </dd>
+        <dt class = "col-sm-2">
+            Зображення
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt class = "col-sm-2">
+            Рейтинг
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Raiting)
+        </dd>
+        <dt class = "col-sm-2">
+            Власник
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Owner.ID)
+        </dd class>
+        <dt class = "col-sm-2">
+            Статус
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PosterStatus.ID)
+        </dd class>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

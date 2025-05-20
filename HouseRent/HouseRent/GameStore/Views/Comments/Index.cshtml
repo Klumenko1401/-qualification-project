@@ -1,0 +1,53 @@
+﻿@model IEnumerable<GameStore.Models.Comment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<p>
+    <a asp-action="Create">Додати</a>
+</p>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Опис
+            </th>
+            <th>
+                Оголошення
+            </th>
+            <th>
+                Покупець
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicationDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Poster.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublicationDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Редагувати</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Інформація</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Видалити</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

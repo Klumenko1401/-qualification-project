@@ -1,0 +1,40 @@
+﻿@model IEnumerable<GameStore.Models.User>
+@{
+    ViewData["Title"] = "Index";
+}
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Логін</th>
+            <th>Пароль</th>
+            <th>Ім'я</th>
+            <th>Прізвище</th>
+            <th>Email</th>
+            <th>Картка</th>
+            <th>Аватар</th>
+            <th>Роль</th>
+            <th>Статус перевірки</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Login)</td>
+                <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Card)</td>
+                <td><img src="@item.Avatar" alt="avatar" width="150px;" /></td>
+                <td>@Html.DisplayFor(modelItem => item.Role.Name)</td>
+                <td>@(item.VerificationStatus?.Name ?? "Немає документів")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Інформація</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

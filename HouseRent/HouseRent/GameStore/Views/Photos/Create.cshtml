@@ -1,0 +1,37 @@
+﻿@model GameStore.Models.Photo
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Додати фото</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PosterID" class="control-label">Оголошення</label>
+                <select asp-for="PosterID" class="form-control" asp-items="ViewBag.PosterID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Фото</label>
+                <input type="file" name="file" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Повернутися до списку</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

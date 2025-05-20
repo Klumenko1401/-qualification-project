@@ -1,0 +1,169 @@
+﻿@model GameStore.Models.Order
+
+@{
+    ViewData["Title"] = "Детальна інформація по договору";
+}
+
+<h1>Детальна інформація по договору</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Оголошення
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Posters" asp-action="Details" asp-route-id="@Model.PosterID">
+                @Html.DisplayFor(model => model.Poster.Name)
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            Покупець
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            Продавець
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Poster.Owner.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            Дата оформлення
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt class="col-sm-2">
+            Статус договору
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderStatus.Name)
+        </dd>
+        @if (!string.IsNullOrEmpty(Model.ContractFilePath))
+        {
+            <dt class="col-sm-2">
+                Договір
+            </dt>
+            <dd class="col-sm-10">
+                <iframe src="@Model.ContractFilePath" width="100%" height="600px" frameborder="0" style="border: 1px solid #ddd;"></iframe>
+            </dd>
+        }
+    </dl>
+</div>
+
+<div>
+    @if (User.Identity.IsAuthenticated && ViewBag.IsLatestOrder)
+    {
+        if (User.IsInRole("Продавець") && Model.OrderStatusID == 3) // "Заявка" (ID 3)
+        {
+            <h4>Продовжити оформлення договору?</h4>
+            <p>
+                <a style="color:red" asp-action="Return" asp-route-id="@Model.ID">Відхилити</a>
+            </p>
+            <p>
+                <a style="color:blue" asp-action="Accept" asp-route-id="@Model.ID">Оформити</a>
+            </p>
+        }
+
+        if (User.IsInRole("Продавець") && Model.OrderStatusID == 1) // "Прийнятий" (ID 1)
+        {
+            <form asp-action="UploadContract" asp-route-id="@Model.ID" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="contractFile">Завантажити договір</label>
+                    <input type="file" name="contractFile" id="contractFile" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Надіслати на перевірку" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+    }
+</div>
+
+<!-- Оновлена секція платежів -->
+@if ((User.IsInRole("Продавець") || User.IsInRole("Покупець") || User.IsInRole("Адміністратор")) && Model.Payments != null && Model.Payments.Any())
+{
+    <h4>Оплати:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Статус</th>
+                <th>Дата оплати</th>
+                <th>Дата платежу</th>
+                <th>Сума</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Payments.OrderBy(p => p.PaymentDueDate))
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentStatus.Name)</td>
+                    <td>@(item.PaymentDate.HasValue ? item.PaymentDate.Value.ToString("dd.MM.yyyy HH:mm") : "Очікується")</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDueDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>
+                        @if (User.IsInRole("Покупець") && item.PaymentStatus.Name.Equals("Невиконана"))
+                        {
+                            <a style="color:blue" asp-controller="Payments" asp-action="Pay" asp-route-id="@item.ID">Сплатити</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (User.IsInRole("Адміністратор") && Model.OrderStatusID == 6) // "Перевірка" (ID 6)
+{
+    <form asp-controller="AdminOrders" asp-action="Confirm" method="post">
+        <input type="hidden" name="id" value="@Model.ID" />
+        <div class="form-group">
+            <label for="amount">Сума за один платіж</label>
+            <input type="number" name="amount" id="amount" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="paymentCount">Кількість платежів</label>
+            <input type="number" name="paymentCount" id="paymentCount" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="firstPaymentDate">Дата першого платежу</label>
+            <input type="date" name="firstPaymentDate" id="firstPaymentDate" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="lastPaymentDate">Дата останнього платежу</label>
+            <input type="date" name="lastPaymentDate" id="lastPaymentDate" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Підтвердити договір" class="btn btn-primary" />
+        </div>
+    </form>
+}
+
+@if (User.IsInRole("Покупець") && Model.OrderStatusID == 4) // "Завершене" (ID 4)
+{
+    <br />
+    <hr />
+    <h5>Оцінити</h5>
+    <form asp-controller="Raitings" asp-action="Rate">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group" hidden>
+            <input type="number" name="PosterID" value="@Model.PosterID" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Оцінка</label>
+            <select name="Value" class="form-control" required>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Поставити оцінку" class="btn btn-primary" />
+        </div>
+    </form>
+}

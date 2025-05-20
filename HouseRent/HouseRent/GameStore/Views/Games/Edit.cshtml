@@ -1,0 +1,77 @@
+﻿@model HouseRent.Models.Poster
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Назва</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="ProductionDate" class="control-label">Дата виходу</label>
+                <input asp-for="ProductionDate" class="form-control" />
+                <span asp-validation-for="ProductionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Developer" class="control-label">Виробник</label>
+                <input asp-for="Developer" class="form-control" />
+                <span asp-validation-for="Developer" class="text-danger"></span>
+            </div> *@
+            @* <div class="form-group">
+                <label asp-for="Platforms" class="control-label">Платформа</label>
+                <input asp-for="Platforms" class="form-control" />
+                <span asp-validation-for="Platforms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label">Мова інтерфейсу</label>
+                <input asp-for="Language" class="form-control" />
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div> *@
+            @* <div class="form-group">
+                <label asp-for="ModereatorID" class="control-label"></label>
+                <select asp-for="ModereatorID" class="form-control" asp-items="ViewBag.ModereatorID"></select>
+                <span asp-validation-for="ModereatorID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Raiting" class="control-label"></label>
+                <input asp-for="Raiting" class="form-control" />
+                <span asp-validation-for="Raiting" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Обкладинка</label>
+                <input type="file" name="file" value="" asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Опис</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenreID" class="control-label">Категорія</label>
+                <select asp-for="GenreID" class="form-control" asp-items="ViewBag.GenreID"></select>
+                <span asp-validation-for="GenreID" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

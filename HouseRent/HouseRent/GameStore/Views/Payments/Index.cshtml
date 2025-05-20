@@ -1,0 +1,55 @@
+﻿@model IEnumerable<GameStore.Models.Payment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Договір
+            </th>
+            <th>
+                Статус
+            </th>
+            <th>
+                Дата
+            </th>
+            <th>
+                Сума
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentStatus.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Покупець") && item.PaymentStatus.Equals("Невиконана"))
+                    {
+                        <h4>Оформити договір</h4>
+                        <p>
+                            <a style="color:blue " asp-controler="Payments" asp-action="Pay" asp-route-id="@item.ID">Сплатити</a>
+                        </p>
+                    }
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

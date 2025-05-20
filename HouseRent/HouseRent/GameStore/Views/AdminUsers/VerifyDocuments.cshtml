@@ -1,0 +1,49 @@
+﻿@model GameStore.Models.User
+@{
+    ViewData["Title"] = "Перевірка документів";
+}
+<h1>Перевірка документів користувача @Model.Login</h1>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Тип документа</th>
+            <th>Файл</th>
+            <th>Дата завантаження</th>
+            <th>Статус</th>
+            <th>Коментар</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doc in Model.UserDocuments)
+        {
+            <tr>
+                <td>@doc.DocumentType.Name</td>
+                <td><iframe src="@doc.FilePath" width="500" height="400" class="document-iframe"></iframe></td>
+                <td>@doc.UploadDate.ToString("dd.MM.yyyy")</td>
+                <td>@doc.DocumentStatus.Name</td>
+                <td>@doc.Comment</td>
+                <td>
+                    <form asp-action="UpdateDocumentStatus" method="post" class="document-form">
+                        <input type="hidden" name="documentId" value="@doc.ID" />
+                        <div>
+                            <label for="statusId">Статус:</label>
+                            <select name="statusId" id="statusId" class="form-control status-select">
+                                @foreach (var status in ViewBag.Statuses)
+                                {
+                                    <option value="@status.ID" selected="@(status.ID == doc.DocumentStatusID ? "selected" : null)">@status.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <label for="comment">Коментар:</label>
+                            <textarea name="comment" id="comment" class="form-control comment-textarea" placeholder="Коментар">@doc.Comment</textarea>
+                        </div>
+                        <input type="submit" value="Зберегти" class="btn btn-primary" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Index">Повернутися до списку</a>

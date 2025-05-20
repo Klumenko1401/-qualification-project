@@ -1,0 +1,39 @@
+﻿@model IEnumerable<GameStore.Models.User>
+@{
+    ViewData["Title"] = "Користувачі";
+}
+
+<h1>Користувачі</h1>
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table user-table">
+            <thead>
+                <tr>
+                    <th>Логін</th>
+                    <th>Ім'я</th>
+                    <th>Прізвище</th>
+                    <th>Email</th>
+                    <th>Роль</th>
+                    <th>Статус верифікації</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td data-label="Логін">@user.Login</td>
+                        <td data-label="Ім'я">@user.FirstName</td>
+                        <td data-label="Прізвище">@user.LastName</td>
+                        <td data-label="Email">@user.Email</td>
+                        <td data-label="Роль">@user.Role.Name</td>
+                        <td data-label="Статус верифікації">@(user.VerificationStatus != null ? user.VerificationStatus.Name : "Немає документів")</td>
+                        <td class="actions" data-label="Дії">
+                            <a asp-action="VerifyDocuments" asp-route-id="@user.ID">Перевірка документів</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,226 @@
+﻿@model IEnumerable<HouseRent.Models.Poster>
+
+@{
+    ViewData["Title"] = "Мої оголошення";
+    var statusFilter = ViewContext.HttpContext.Request.Query["statusFilter"].ToString();
+    var statuses = new List<string> { "", "Відхилене", "Неактивне", "Активне", "Модерація", "В процесі оформлення", "В процесі" };
+    var statusLabels = new List<string> { "Всі", "Відхилене", "Неактивне", "Активне", "Модерація", "В процесі оформлення", "В процесі" };
+}
+
+<style>
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+    .status-badge {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        border-radius: 12px;
+        color: white;
+    }
+
+    .status-Відхилене {
+        background-color: #dc3545;
+    }
+
+    .status-Неактивне {
+        background-color: #6c757d;
+    }
+
+    .status-Активне {
+        background-color: #28a745;
+    }
+
+    .status-Модерація {
+        background-color: #ffc107;
+    }
+
+    .status-В_процесі_оформлення {
+        background-color: #17a2b8;
+    }
+
+    .status-В_процесі {
+        background-color: #007bff;
+    }
+
+    .description-clamp {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 3em;
+        line-height: 1.5em;
+    }
+
+    .debug-info {
+        background-color: #f8d7da;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        color: #721c24;
+    }
+</style>
+
+<h1>Мої оголошення</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Продавець"))
+{
+    <!-- Помітна кнопка Створити оголошення -->
+    @if (ViewBag.CanCreatePoster)
+    {
+        <a asp-action="Create" class="btn btn-success mb-4" style="background-color: #28a745; color: white; font-weight: bold; padding: 10px 20px;">
+            <i class="fas fa-plus"></i> Створити оголошення
+        </a>
+    }
+    else
+    {
+        <button class="btn btn-success mb-4" style="background-color: #28a745; color: white; font-weight: bold; padding: 10px 20px;" disabled>
+            <i class="fas fa-plus"></i> Створити оголошення
+        </button>
+        <span class="text-danger">@ViewBag.VerificationMessage</span>
+    }
+
+    <!-- Фільтр за статусом -->
+    <div class="mb-4">
+        <form asp-action="MyPosters" method="get">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Фільтр за статусом:</label>
+                    <select name="statusFilter" class="form-select" onchange="this.form.submit()">
+                        @{
+                            for (int i = 0; i < statuses.Count; i++)
+                            {
+                                var isSelected = statusFilter == statuses[i] ? "selected" : "";
+                                @Html.Raw($"<option value=\"{statuses[i]}\" {isSelected}>{statusLabels[i]}</option>")
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Виведення дебаг-інформації -->
+    @if (!string.IsNullOrEmpty(ViewBag.DebugMessage))
+    {
+        <div class="debug-info">
+            <p><strong>Дебаг:</strong> @ViewBag.DebugMessage</p>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.DebugStatuses))
+    {
+        <div class="debug-info">
+            <p><strong>Статуси оголошень у базі:</strong> @ViewBag.DebugStatuses</p>
+        </div>
+    }
+}
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Покупець"))
+{
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <form asp-action="Index" method="get">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Назва чи опис</label>
+                    <input name="KeyWords" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Категорія</label>
+                    <select name="PosterTypeID" class="form-control" asp-items="ViewBag.PosterTypeID">
+                        <option selected> </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ціна (від)</label>
+                    <input type="number" name="MinPrice" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ціна (до)</label>
+                    <input type="number" name="MaxPrice" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Кількість днів оренди (до)</label>
+                    <input type="number" name="Days" class="form-control" />
+                </div>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Шукати" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(item.Image))
+                    {
+                        <img src="@item.Image" class="card-img-top" alt="Poster Image" />
+                    }
+                    else
+                    {
+                        <img src="/img/logo.jpg" class="card-img-top" alt="Default Image" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
+                        </h5>
+                        <p class="card-text description-clamp">@Html.DisplayFor(modelItem => item.Description)</p>
+                        <p class="card-text"><strong>Тип:</strong> @Html.DisplayFor(modelItem => item.PosterType.Name)</p>
+                        @if (item.MinRentDays.HasValue)
+                        {
+                            <p class="card-text"><strong>Мін. днів оренди:</strong> @Html.DisplayFor(modelItem => item.MinRentDays)</p>
+                        }
+                        <p class="card-text"><strong>Ціна:</strong> @Html.DisplayFor(modelItem => item.Price) грн</p>
+                        @if (item.MaxPayTerms.HasValue)
+                        {
+                            <p class="card-text"><strong>Кількість платежів:</strong> @Html.DisplayFor(modelItem => item.MaxPayTerms)</p>
+                        }
+                        <p class="card-text"><strong>Рейтинг:</strong> @Html.DisplayFor(modelItem => item.Raiting)</p>
+                        <p class="card-text"><strong>Власник:</strong> @Html.DisplayFor(modelItem => item.Owner.FullName)</p>
+                        <p class="card-text">
+                            <strong>Статус:</strong>
+                            <span class="status-badge status-@item.PosterStatus.Name.Replace(" ", "_")">
+                                @Html.DisplayFor(modelItem => item.PosterStatus.Name)
+                            </span>
+                        </p>
+                    </div>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Продавець"))
+                    {
+                        <div class="card-footer text-center">
+                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary btn-sm me-2">Деталі</a>
+                            @if (item.PosterStatusID != 5 && item.PosterStatusID != 6) // Приховуємо "Редагувати" та "Видалити" для статусів 5 і 6
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning btn-sm me-2">Редагувати</a>
+                                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm" onclick="return confirm('Ви впевнені, що хочете видалити це оголошення?');">Видалити</a>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h4>Поки немає оголошень... =(</h4>
+}
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

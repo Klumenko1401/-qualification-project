@@ -1,0 +1,81 @@
+﻿@model HouseRent.Models.Poster
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Назва
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        @* <dt class = "col-sm-2">
+            Дата випуску
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductionDate)
+        </dd>
+        <dt class = "col-sm-2">
+            Виробник
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Developer)
+        </dd>
+        <dt class = "col-sm-2">
+            Платформа
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Platforms)
+        </dd>
+        <dt class = "col-sm-2">
+            Мова інтерфейсу
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt class = "col-sm-2">
+            Модератор
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Modereator.ID)
+        </dd class>
+        <dt class = "col-sm-2">
+            Рейтинг
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Raiting)
+        </dd>
+        <dt class = "col-sm-2">
+            Логотип
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt class = "col-sm-2">
+            Опис
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Жанр
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Genre.ID)
+        </dd class> *@
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        
+    </form>
+</div>

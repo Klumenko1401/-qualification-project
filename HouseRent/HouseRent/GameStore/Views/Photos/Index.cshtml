@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GameStore.Models.Photo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Фото
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    <img src="@item.Image" alt="Image" width="150px;" />
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.ID">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

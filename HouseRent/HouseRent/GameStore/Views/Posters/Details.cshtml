@@ -1,0 +1,180 @@
+﻿@model HouseRent.Models.Poster
+
+@{
+    ViewData["Title"] = "Інформація";
+}
+
+<h1 class="text-center mb-4">Інформація про оголошення</h1>
+<hr />
+
+<div class="container">
+    <div class="details-card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">@Html.DisplayFor(model => model.Name)</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Зображення -->
+                <div class="col-md-4 text-center">
+                    <img src="@Model.Image" alt="Обкладинка" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" />
+                    @if (Model.Photos.Count() > 0)
+                    {
+                        <div class="mt-3">
+                            <h5>Додаткові фото:</h5>
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="max-width: 100%;">
+                                <ol class="carousel-indicators">
+                                    @for (var i = 0; i < Model.Photos.Count(); i++)
+                                    {
+                                        <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                                    }
+                                </ol>
+                                <div class="carousel-inner">
+                                    @for (var i = 0; i < Model.Photos.Count(); i++)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <img class="d-block w-100" src="@Model.Photos.ElementAt(i).Image" style="max-height: 300px; object-fit: cover;" alt="Фото @i">
+                                        </div>
+                                    }
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Попереднє</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Наступне</span>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- Інформація -->
+                <div class="col-md-8">
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Опис:</strong></div>
+                        <div class="col-sm-8">@Html.DisplayFor(model => model.Description)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Тип оголошення:</strong></div>
+                        <div class="col-sm-8">
+                            @if (Model.IsRental)
+                            {
+                                if (Model.IsLongTermRental)
+                                {
+                                    <span>Оренда (довгострокова)</span>
+                                }
+                                else if (Model.IsLongTermWithBuyout)
+                                {
+                                    <span>Оренда (довгострокова з викупом)</span>
+                                }
+                                else if (Model.IsShortTermRental)
+                                {
+                                    <span>Оренда (на день)</span>
+                                }
+                            }
+                            else if (Model.IsSale)
+                            {
+                                if (Model.IsInstallmentPayment)
+                                {
+                                    <span>Продаж (частинами)</span>
+                                }
+                                else if (Model.IsFullPayment)
+                                {
+                                    <span>Продаж (повна оплата)</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                    @if (Model.IsRental && Model.MinRentDays.HasValue)
+                    {
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Мінімальний строк оренди:</strong></div>
+                            <div class="col-sm-8">@Html.DisplayFor(model => model.MinRentDays) днів</div>
+                        </div>
+                    }
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Ціна:</strong></div>
+                        <div class="col-sm-8">@Html.DisplayFor(model => model.Price) грн</div>
+                    </div>
+                    @if (Model.MaxPayTerms.HasValue)
+                    {
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Кількість платежів:</strong></div>
+                            <div class="col-sm-8">@Html.DisplayFor(model => model.MaxPayTerms)</div>
+                        </div>
+                    }
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Контактні дані:</strong></div>
+                        <div class="col-sm-8">@Html.DisplayFor(model => model.ContactDetails)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Рахунок для оплати:</strong></div>
+                        <div class="col-sm-8">@Html.DisplayFor(model => model.PaymentAccount)</div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.ContractTemplateImage))
+                    {
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Шаблон договору:</strong></div>
+                            <div class="col-sm-8">
+                                <a asp-controller="Posters" asp-action="ViewContractTemplate" asp-route-id="@Model.ID" class="btn btn-info">Переглянути шаблон договору</a>
+                            </div>
+                        </div>
+                    }
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Рейтинг:</strong></div>
+                        <div class="col-sm-8">@Html.DisplayFor(model => model.Raiting) / 5</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Власник:</strong></div>
+                        <div class="col-sm-8">@Html.DisplayFor(model => model.Owner.FullName)</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4"><strong>Статус:</strong></div>
+                        <div class="col-sm-8">
+                            <span class="badge badge-pill badge-@Model.PosterStatus.Name.Replace(" ", "_").ToLower()">
+                                @Html.DisplayFor(model => model.PosterStatus.Name)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            @if (ViewBag.Editable)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-warning mr-2">Редагувати</a>
+            }
+        </div>
+    </div>
+
+    <!-- Адміністративні дії -->
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Адміністратор") && Model.PosterStatus.Name.Equals("Модерація"))
+    {
+        <div class="details-card shadow-sm mb-4">
+            <div class="card-body text-center">
+                <h4 class="mb-3">Прийняти чи відхилити це оголошення?</h4>
+                <a style="color: red" asp-action="Return" asp-route-id="@Model.ID" class="btn btn-danger mr-2">Відхилити</a>
+                <a style="color: blue" asp-action="Accept" asp-route-id="@Model.ID" class="btn btn-primary">Прийняти</a>
+            </div>
+        </div>
+    }
+
+    <!-- Оформлення договору для покупця -->
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Покупець") && Model.PosterStatus.Name.Equals("Активне"))
+    {
+        <div class="details-card shadow-sm mb-4">
+            <div class="card-body text-center">
+                <h4 class="mb-3">Оформити договір</h4>
+                @if (ViewBag.CanCreateOrder)
+                {
+                    <a style="color: blue" asp-controller="Orders" asp-action="CreateNew" asp-route-id="@Model.ID" class="btn btn-primary">Оформити договір</a>
+                }
+                else
+                {
+                    <button class="btn btn-primary" style="color: blue" disabled>Оформити договір</button>
+                    <span class="text-danger">@ViewBag.VerificationMessage</span>
+                }
+            </div>
+        </div>
+    }
+</div>

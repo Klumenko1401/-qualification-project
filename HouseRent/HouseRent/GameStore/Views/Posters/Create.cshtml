@@ -1,0 +1,320 @@
+﻿@model HouseRent.Models.Poster
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Створити оголошення</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data" onsubmit="updateHiddenFields()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Назва <span style="color: red;">*</span></label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Тип оголошення</label><br />
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="TypeSelection" id="IsRental" value="true" onchange="toggleFields()" checked>
+                    <label class="form-check-label" for="IsRental">Оренда</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="TypeSelection" id="IsSale" value="true" onchange="toggleFields()">
+                    <label class="form-check-label" for="IsSale">Продаж</label>
+                </div>
+                <input type="hidden" asp-for="IsRental" id="HiddenIsRental" />
+                <input type="hidden" asp-for="IsSale" id="HiddenIsSale" />
+            </div>
+            <div class="form-group" id="rentalTypeSection" style="display: block;">
+                <label class="control-label">Тип оренди</label><br />
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="RentalTypeSelection" id="IsLongTermRental" value="true" onchange="toggleFields()" checked>
+                    <label class="form-check-label" for="IsLongTermRental">Довгострокова</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="RentalTypeSelection" id="IsLongTermWithBuyout" value="true" onchange="toggleFields()">
+                    <label class="form-check-label" for="IsLongTermWithBuyout">Довгострокова з викупом</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="RentalTypeSelection" id="IsShortTermRental" value="true" onchange="toggleFields()">
+                    <label class="form-check-label" for="IsShortTermRental">Короткострокова</label>
+                </div>
+                <input type="hidden" asp-for="IsLongTermRental" id="HiddenIsLongTermRental" />
+                <input type="hidden" asp-for="IsLongTermWithBuyout" id="HiddenIsLongTermWithBuyout" />
+                <input type="hidden" asp-for="IsShortTermRental" id="HiddenIsShortTermRental" />
+            </div>
+            <div class="form-group" id="paymentTypeSection" style="display: none;">
+                <label class="control-label">Тип оплати</label><br />
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="PaymentTypeSelection" id="IsFullPayment" value="true" onchange="toggleFields()" checked>
+                    <label class="form-check-label" for="IsFullPayment">Повна оплата</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="PaymentTypeSelection" id="IsInstallmentPayment" value="true" onchange="toggleFields()">
+                    <label class="form-check-label" for="IsInstallmentPayment">Частинами</label>
+                </div>
+                <input type="hidden" asp-for="IsFullPayment" id="HiddenIsFullPayment" />
+                <input type="hidden" asp-for="IsInstallmentPayment" id="HiddenIsInstallmentPayment" />
+            </div>
+            <div class="form-group" id="maxPayTermsSection" style="display: none;">
+                <label asp-for="MaxPayTerms" class="control-label">Максимальна кількість платежів</label>
+                <input asp-for="MaxPayTerms" class="form-control" />
+                <span asp-validation-for="MaxPayTerms" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="minRentDaysSection">
+                <label asp-for="MinRentDays" class="control-label">Мінімальний строк оренди</label>
+                <input asp-for="MinRentDays" class="form-control" />
+                <span asp-validation-for="MinRentDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Ціна <span style="color: red;">*</span></label>
+                <input asp-for="Price" class="form-control" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="contractTemplateSection">
+                <label class="control-label">Шаблон договору</label>
+                <input type="file" name="contractTemplateFile" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Основне фото <span style="color: red;">*</span></label>
+                <input type="file" name="file" id="mainPhotoInput" class="form-control" onchange="previewMainPhoto(event)" required />
+                <div id="mainPhotoPreview" class="photo-preview mt-3">
+                    @if (!string.IsNullOrEmpty(Model?.Image) && Model.Image != "/img/logo.jpg")
+                    {
+                        <div class="photo-item">
+                            <img src="@Model.Image" alt="Основне фото" class="img-fluid" style="max-width: 300px; max-height: 300px;" />
+                            <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeMainPhoto('@Model.ID')">Видалити</button>
+                        </div>
+                    }
+                </div>
+                <span id="imageValidation" class="text-danger" style="display: none;">Основне фото є обов'язковим полем</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Додаткові фото</label>
+                <input type="file" name="additionalPhotos" multiple id="additionalPhotosInput" class="form-control" onchange="previewAdditionalPhotos(event)" />
+                <div id="additionalPhotosPreview" class="photo-preview mt-3 d-flex flex-wrap gap-3">
+                    @if (Model?.Photos != null && Model.Photos.Any())
+                    {
+                        foreach (var photo in Model.Photos)
+                        {
+                            <div class="photo-item">
+                                <img src="@photo.Image" alt="Додаткове фото" class="img-fluid" style="max-width: 300px; max-height: 300px;" />
+                                <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeAdditionalPhoto('@photo.ID')">Видалити</button>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Опис житла <span style="color: red;">*</span></label>
+                <textarea asp-for="Description" class="form-control" rows="10" style="min-height: 200px; width: 100%; resize: vertical;" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactDetails" class="control-label">Контактні дані <span style="color: red;">*</span></label>
+                <input asp-for="ContactDetails" class="form-control" required />
+                <span asp-validation-for="ContactDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentAccount" class="control-label">Картка чи рахунок для оплати</label>
+                <input asp-for="PaymentAccount" class="form-control" />
+                <span asp-validation-for="PaymentAccount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад до списку</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function toggleFields() {
+            const isRental = document.getElementById("IsRental").checked;
+            const isSale = document.getElementById("IsSale").checked;
+            const isLongTermRental = document.getElementById("IsLongTermRental").checked;
+            const isLongTermWithBuyout = document.getElementById("IsLongTermWithBuyout").checked;
+            const isShortTermRental = document.getElementById("IsShortTermRental").checked;
+            const isInstallmentPayment = document.getElementById("IsInstallmentPayment").checked;
+
+            document.getElementById("rentalTypeSection").style.display = isRental ? "block" : "none";
+            document.getElementById("paymentTypeSection").style.display = isSale ? "block" : "none";
+            document.getElementById("maxPayTermsSection").style.display = isSale && isInstallmentPayment ? "block" : "none";
+            document.getElementById("minRentDaysSection").style.display = isRental ? "block" : "none";
+            const hideContractTemplate = isRental && isShortTermRental;
+            document.getElementById("contractTemplateSection").style.display = hideContractTemplate ? "none" : "block";
+        }
+
+        function updateHiddenFields() {
+            const isRental = document.getElementById("IsRental").checked;
+            const isSale = document.getElementById("IsSale").checked;
+            const isLongTermRental = document.getElementById("IsLongTermRental").checked;
+            const isLongTermWithBuyout = document.getElementById("IsLongTermWithBuyout").checked;
+            const isShortTermRental = document.getElementById("IsShortTermRental").checked;
+            const isFullPayment = document.getElementById("IsFullPayment").checked;
+            const isInstallmentPayment = document.getElementById("IsInstallmentPayment").checked;
+
+            document.getElementById("HiddenIsRental").value = isRental ? "true" : "false";
+            document.getElementById("HiddenIsSale").value = isSale ? "true" : "false";
+            document.getElementById("HiddenIsLongTermRental").value = isLongTermRental ? "true" : "false";
+            document.getElementById("HiddenIsLongTermWithBuyout").value = isLongTermWithBuyout ? "true" : "false";
+            document.getElementById("HiddenIsShortTermRental").value = isShortTermRental ? "true" : "false";
+            document.getElementById("HiddenIsFullPayment").value = isFullPayment ? "true" : "false";
+            document.getElementById("HiddenIsInstallmentPayment").value = isInstallmentPayment ? "true" : "false";
+        }
+
+        function previewMainPhoto(event) {
+            const input = event.target;
+            const preview = document.getElementById("mainPhotoPreview");
+            const validation = document.getElementById("imageValidation");
+            preview.innerHTML = "";
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.className = "img-fluid";
+                    img.style.maxWidth = "300px";
+                    img.style.maxHeight = "300px";
+
+                    const container = document.createElement("div");
+                    container.className = "photo-item";
+                    container.appendChild(img);
+
+                    const removeButton = document.createElement("button");
+                    removeButton.type = "button";
+                    removeButton.className = "btn btn-danger btn-sm mt-2";
+                    removeButton.textContent = "Видалити";
+                    removeButton.onclick = function () {
+                        preview.innerHTML = "";
+                        input.value = "";
+                        validation.style.display = "block";
+                    };
+                    container.appendChild(removeButton);
+
+                    preview.appendChild(container);
+                    validation.style.display = "none";
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeMainPhoto(posterId) {
+            if (confirm("Ви впевнені, що хочете видалити основне фото?")) {
+                fetch(`/Posters/DeleteMainPhoto?posterId=${posterId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert("Помилка при видаленні фото: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
+
+        function previewAdditionalPhotos(event) {
+            const input = event.target;
+            const preview = document.getElementById("additionalPhotosPreview");
+
+            if (input.files) {
+                Array.from(input.files).forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.className = "img-fluid";
+                        img.style.maxWidth = "300px";
+                        img.style.maxHeight = "300px";
+
+                        const container = document.createElement("div");
+                        container.className = "photo-item";
+                        container.appendChild(img);
+
+                        const removeButton = document.createElement("button");
+                        removeButton.type = "button";
+                        removeButton.className = "btn btn-danger btn-sm mt-2";
+                        removeButton.textContent = "Видалити";
+                        removeButton.onclick = function () { container.remove(); };
+                        container.appendChild(removeButton);
+
+                        preview.appendChild(container);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        function removeAdditionalPhoto(photoId) {
+            if (confirm("Ви впевнені, що хочете видалити це фото?")) {
+                fetch(`/Photos/Delete/${photoId}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert("Помилка при видаленні фото: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", toggleFields);
+
+        // Додатковий скрипт для валідації основного фото
+        document.querySelector("form").addEventListener("submit", function (event) {
+            const mainPhotoInput = document.getElementById("mainPhotoInput");
+            const mainPhotoPreview = document.getElementById("mainPhotoPreview");
+            const validation = document.getElementById("imageValidation");
+            if (!mainPhotoInput.value && (!mainPhotoPreview.innerHTML || mainPhotoPreview.innerHTML.includes("/img/logo.jpg"))) {
+                validation.style.display = "block";
+                event.preventDefault();
+            } else {
+                validation.style.display = "none";
+            }
+        });
+    </script>
+    <style>
+        .photo-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .photo-item {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+            .photo-item img {
+                display: block;
+                margin-bottom: 10px;
+            }
+    </style>
+}

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GameStore.Models.Order>
+
+@{
+    ViewData["Title"] = "Усі договори";
+}
+
+<h1>Усі договори</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Оголошення</th>
+            <th>Покупець</th>
+            <th>Продавець</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th>Деталі</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Posters" asp-action="Details" asp-route-id="@item.PosterID">
+                        @Html.DisplayFor(modelItem => item.Poster.Name)
+                    </a>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.User.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Poster.Owner.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.OrderStatus.Name)</td>
+                <td>
+                    <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.ID">Деталі</a>
+                    @* Додаємо форму для зміни статусу *@
+                    <form asp-controller="AdminOrders" asp-action="UpdateOrderStatus" method="post" style="display:inline;">
+                        <input type="hidden" name="orderId" value="@item.ID" />
+                        
+                        
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

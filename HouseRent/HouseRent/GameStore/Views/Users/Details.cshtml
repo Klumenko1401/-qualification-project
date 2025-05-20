@@ -1,0 +1,125 @@
+﻿@model GameStore.Models.User
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Аватар
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.Avatar))
+            {
+                <img src="@Model.Avatar" alt="avatar" width="150px" />
+            }
+            else
+            {
+                <span>Немає аватара</span>
+            }
+        </dd>
+        @if (ViewBag.My)
+        {
+            <dt class="col-sm-2">
+                Логін
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Login)
+            </dd>
+            <dt class="col-sm-2">
+                Пароль
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Password)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            Ім'я
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            Прізвище
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            Роль
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Role.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Рейтинг
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(ViewBag.Raiting)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (ViewBag.My)
+    {
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.ID">Редагувати</a>
+        </p>
+    }
+</div>
+
+
+
+<!-- Секція для документів -->
+@if (Model.UserDocuments != null && Model.UserDocuments.Any())
+{
+    <h5>Завантажені документи</h5>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Тип документа</th>
+                <th>Дата завантаження</th>
+                <th>Статус</th>
+                <th>Коментар</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doc in Model.UserDocuments)
+            {
+                <tr>
+                    <td>@doc.DocumentType.Name</td>
+                    <td>@doc.UploadDate.ToString("dd.MM.yyyy")</td>
+                    <td>@doc.DocumentStatus.Name</td>
+                    <td>@doc.Comment</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Форма для завантаження нового документа -->
+@if (ViewBag.My && (Model.Role.Name == "Покупець" || Model.Role.Name == "Продавець"))
+{
+    <h5>Завантажити документ на перевірку</h5>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+    <form asp-action="UploadDocument" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Тип документа</label>
+            <select name="documentTypeId" class="form-control">
+                @foreach (var docType in ViewBag.DocumentTypes)
+                {
+                    <option value="@docType.ID">@docType.Name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Файл (PDF, JPG, JPEG, PNG, макс. 5 МБ)</label>
+            <input type="file" name="documentFile" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Завантажити</button>
+    </form>
+}
